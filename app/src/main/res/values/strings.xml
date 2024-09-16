@@ -8,4 +8,7 @@
     <string name="user">User</string>
     <string name="todo">TODO</string>
     <string name="home_page">Home Page</string>
+    <string name="add_task">Add Task</string>
+    <string name="go_to_sleep">go to sleep</string>
+    <string name="description">Description</string>
 </resources>
