@@ -5,10 +5,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
 import com.proptit.todoapp.adapter.viewpageradapter.FragmentMainViewPager
 import com.proptit.todoapp.databinding.FragmentMainBinding
+import com.proptit.todoapp.interfaces.IAddTaskListener
 import com.proptit.todoapp.utils.List
 import me.ibrahimsn.lib.SmoothBottomBar
 
@@ -17,6 +19,7 @@ class MainFragment : Fragment() {
     private lateinit var pagerAdapter: FragmentMainViewPager
     private lateinit var viewPager: ViewPager2
     private lateinit var smoothBottomBar: SmoothBottomBar
+
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -32,9 +35,12 @@ class MainFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initComponent()
+        binding.fab.setOnClickListener {
+            onBtnAddTaskClick()
+        }
     }
 
-    private fun initComponent(){
+    private fun initComponent() {
         viewPager = binding.viewPager
         smoothBottomBar = binding.bottomNavigationViewLinear
         pagerAdapter = FragmentMainViewPager(
@@ -44,12 +50,15 @@ class MainFragment : Fragment() {
         )
         viewPager.adapter = pagerAdapter
     }
-    private fun initBehavior(){
+
+    private fun initBehavior() {
 
     }
-    private fun onBtnAddClick(){
-        findNavController().navigate(MainFragmentDirections.actionMainFragmentToAddTaskFragment())
+
+    private fun onBtnAddTaskClick() {
+        AddTaskFragment().show(parentFragmentManager, AddTaskFragment.TAG)
     }
+
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
