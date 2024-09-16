@@ -23,6 +23,7 @@
         app:fabSize="normal"
         android:contentDescription="@string/todo"
         android:layout_marginVertical="10dp"
+        app:shapeAppearanceOverlay="@style/circle_button"
         app:borderWidth="10dp" />
 
 
