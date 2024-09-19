@@ -1,8 +1,10 @@
 package com.proptit.todoapp.utils
 
 import androidx.fragment.app.Fragment
+import com.proptit.todoapp.R
 import com.proptit.todoapp.ui.HomeFragment
 import com.proptit.todoapp.item.ItemPriority
+import com.proptit.todoapp.model.Category
 
 
 object List{
@@ -20,6 +22,9 @@ object List{
         ItemPriority(8),
         ItemPriority(9),
         ItemPriority(10),
+    )
+    val categoryItems = listOf(
+        Category(titleCategory = "Work", idColor = R.color.cyan, idIcon = R.drawable.category_add),
     )
 
 }

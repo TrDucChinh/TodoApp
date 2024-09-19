@@ -69,7 +69,9 @@ class AddTaskFragment() : BottomSheetDialogFragment() {
     }
 
     private fun setTime() {
-        val datePicker = MaterialDatePicker.Builder.datePicker().build()
+        val datePicker = MaterialDatePicker.Builder.datePicker()
+            .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
+            .build()
         datePicker.addOnPositiveButtonClickListener { selection ->
             val sdf = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
             val date = Date(selection)
