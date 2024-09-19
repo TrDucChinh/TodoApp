@@ -11,4 +11,7 @@
     <string name="add_task">Add Task</string>
     <string name="go_to_sleep">go to sleep</string>
     <string name="description">Description</string>
+    <string name="task_priority">Task Priority</string>
+    <string name="save">Save</string>
+    <string name="cancel">Cancel</string>
 </resources>
