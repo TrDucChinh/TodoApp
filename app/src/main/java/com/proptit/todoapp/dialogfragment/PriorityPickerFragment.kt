@@ -1,4 +1,4 @@
-package com.proptit.todoapp.ui
+package com.proptit.todoapp.dialogfragment
 
 import android.os.Bundle
 import android.view.LayoutInflater

@@ -5,12 +5,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
-import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
 import com.proptit.todoapp.adapter.viewpageradapter.FragmentMainViewPager
 import com.proptit.todoapp.databinding.FragmentMainBinding
-import com.proptit.todoapp.interfaces.IAddTaskListener
+import com.proptit.todoapp.dialogfragment.AddTaskFragment
 import com.proptit.todoapp.utils.List
 import me.ibrahimsn.lib.SmoothBottomBar
 

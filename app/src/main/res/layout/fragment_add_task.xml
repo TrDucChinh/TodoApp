@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     android:background="@drawable/bottom_dialog_background"
     android:orientation="vertical"
-    tools:context=".ui.AddTaskFragment">
+    tools:context=".dialogfragment.AddTaskFragment">
 
     <TextView
         android:id="@+id/tv_title"
