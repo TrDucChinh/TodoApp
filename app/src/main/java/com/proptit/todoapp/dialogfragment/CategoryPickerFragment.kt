@@ -5,12 +5,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import com.proptit.todoapp.R
 import com.proptit.todoapp.adapter.recyclerviewadapter.CategoryRecyclerAdapter
 import com.proptit.todoapp.databinding.FragmentCategoryPickerBinding
 import com.proptit.todoapp.interfaces.ICategoryListener
 import com.proptit.todoapp.model.Category
+import com.proptit.todoapp.viewmodel.CategoryViewModel
 
 class CategoryPickerFragment(
     private val categoryListener: ICategoryListener,
@@ -20,6 +22,10 @@ class CategoryPickerFragment(
     private val binding get() = _binding!!
     private val categoryAdapter: CategoryRecyclerAdapter by lazy {
         CategoryRecyclerAdapter(categoryListener /*selectedCategory*/)
+    }
+
+    private val categoryViewModel : CategoryViewModel by activityViewModels {
+        CategoryViewModel.CategoryViewModelFactory(requireActivity().application)
     }
 
     companion object {
@@ -37,66 +43,18 @@ class CategoryPickerFragment(
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val categorys = listOf(
-            Category(
-                titleCategory = "Work",
-                idColor = R.color.light_purple,
-                idIcon = R.drawable.category_bag
-            ),
-            Category(
-                titleCategory = "Work",
-                idColor = R.color.light_purple,
-                idIcon = R.drawable.category_bag
-            ),
-            Category(
-                titleCategory = "Work",
-                idColor = R.color.light_purple,
-                idIcon = R.drawable.category_bag
-            ),
-            Category(
-                titleCategory = "Work",
-                idColor = R.color.light_purple,
-                idIcon = R.drawable.category_bag
-            ),
-            Category(
-                titleCategory = "Work",
-                idColor = R.color.light_purple,
-                idIcon = R.drawable.category_bag
-            ),
-            Category(
-                titleCategory = "Work",
-                idColor = R.color.light_purple,
-                idIcon = R.drawable.category_bag
-            ),
-            Category(
-                titleCategory = "Work",
-                idColor = R.color.light_purple,
-                idIcon = R.drawable.category_bag
-            ),
-            Category(
-                titleCategory = "Work",
-                idColor = R.color.light_purple,
-                idIcon = R.drawable.category_bag
-            ),
-            Category(
-                titleCategory = "Work",
-                idColor = R.color.light_purple,
-                idIcon = R.drawable.category_bag
-            ),
-
-            Category(
-                titleCategory = "Add",
-                idColor = R.color.cyan,
-                idIcon = R.drawable.category_add
-            ),
-        )
-        binding.apply {
-            categoryRecyclerview.adapter = categoryAdapter
-            categoryRecyclerview.layoutManager = GridLayoutManager(context, 3)
-            categoryAdapter.submitList(categorys)
-        }
+        initComponent()
     }
 
+    private fun initComponent() {
+        binding.categoryRecyclerview.apply {
+            adapter = categoryAdapter
+            layoutManager = GridLayoutManager(context, 3)
+        }
+        categoryViewModel.getAllCategory().observe(viewLifecycleOwner) {
+            categoryAdapter.submitList(it)
+        }
+    }
     override fun onStart() {
         super.onStart()
         dialog?.window?.setLayout(
