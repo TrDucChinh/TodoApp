@@ -5,12 +5,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.DialogFragment
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
 import com.proptit.todoapp.databinding.FragmentAddTaskBinding
+import com.proptit.todoapp.interfaces.ICategoryListener
 import com.proptit.todoapp.interfaces.IPriorityListener
+import com.proptit.todoapp.model.Category
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
@@ -20,6 +23,7 @@ class AddTaskFragment() : BottomSheetDialogFragment() {
     private var _binding: FragmentAddTaskBinding? = null
     private val binding get() = _binding!!
     private var selectedPriority = -1
+    private var selectedCategory = -1
     private var hour = 0
     private var minute = 0
 
@@ -51,6 +55,7 @@ class AddTaskFragment() : BottomSheetDialogFragment() {
                 setPriority()
             }
             btnSetCategory.setOnClickListener {
+                setCategory()
             }
 
         }
@@ -65,7 +70,7 @@ class AddTaskFragment() : BottomSheetDialogFragment() {
                 }
             }
         }, selectedPriority)
-        priorityPicker.show(parentFragmentManager, PriorityPickerFragment.TAG)
+        priorityPicker.show(childFragmentManager, PriorityPickerFragment.TAG)
     }
 
     private fun setTime() {
@@ -97,6 +102,22 @@ class AddTaskFragment() : BottomSheetDialogFragment() {
         }
 
         timePicker.show(childFragmentManager, "TIME_PICKER")
+    }
+
+    private fun setCategory() {
+        val categoryPicker = CategoryPickerFragment(
+            object : ICategoryListener {
+                override fun onAddCategoryClick() {
+                    TODO("Not yet implemented")
+                }
+
+                override fun onCategoryClick(category: Category) {
+                    TODO("Not yet implemented")
+                }
+            }, /*selectedCategory*/
+        )
+        categoryPicker.show(childFragmentManager, CategoryPickerFragment.TAG)
+//        categoryPicker.setStyle(DialogFragment.STYLE_NORMAL, android.R.style.Theme_Panel)
     }
 
     override fun onDestroy() {
