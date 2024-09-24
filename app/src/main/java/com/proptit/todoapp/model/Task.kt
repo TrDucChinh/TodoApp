@@ -8,8 +8,8 @@ data class Task(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
     val title: String,
-    val content: String = "",
-    val subtasks: List<Subtask> = emptyList(),
+    val description: String = "",
+//    val subtasks: List<Subtask> = emptyList(),
     val dateCreated: String,
     val dueDate: String = "",
     val dueTime: String = "",

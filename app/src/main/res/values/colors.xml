@@ -5,4 +5,5 @@
     <color name="gray">#363636</color>
     <color name="light_purple">#8687E7</color>
     <color name="defaultColor">#272727</color> <!-- Màu nền mặc định -->
+    <color name="cyan">#80FFD1</color>
 </resources>
