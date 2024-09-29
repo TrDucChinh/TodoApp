@@ -1,10 +1,10 @@
 package com.proptit.todoapp.dialogfragment
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.datepicker.MaterialDatePicker
@@ -108,13 +108,16 @@ class AddTaskFragment() : BottomSheetDialogFragment() {
         val categoryPicker = CategoryPickerFragment(
             object : ICategoryListener {
                 override fun onAddCategoryClick() {
-                    TODO("Not yet implemented")
+                   val createCategoryFragment = CreateCategoryFragment()
+                    createCategoryFragment.show(childFragmentManager, CreateCategoryFragment.TAG)
+                    createCategoryFragment.setStyle(DialogFragment.STYLE_NORMAL, android.R.style.Theme_Black_NoTitleBar_Fullscreen)
                 }
 
                 override fun onCategoryClick(category: Category) {
                     TODO("Not yet implemented")
                 }
-            }, /*selectedCategory*/
+            },
+            /*selectedCategory*/
         )
         categoryPicker.show(childFragmentManager, CategoryPickerFragment.TAG)
 //        categoryPicker.setStyle(DialogFragment.STYLE_NORMAL, android.R.style.Theme_Panel)

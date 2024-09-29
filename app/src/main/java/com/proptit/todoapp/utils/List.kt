@@ -1,13 +1,16 @@
 package com.proptit.todoapp.utils
 
+import android.graphics.drawable.Icon
 import androidx.fragment.app.Fragment
 import com.proptit.todoapp.R
+import com.proptit.todoapp.item.ItemColor
+import com.proptit.todoapp.item.ItemIcon
 import com.proptit.todoapp.ui.HomeFragment
 import com.proptit.todoapp.item.ItemPriority
 import com.proptit.todoapp.model.Category
 
 
-object List{
+object List {
     val fragmentList = arrayListOf<Fragment>(
         HomeFragment()
     )
@@ -25,6 +28,34 @@ object List{
     )
     val categoryItems = listOf(
         Category(titleCategory = "Work", idColor = R.color.cyan, idIcon = R.drawable.category_add),
+    )
+    val colorCategoryItems = listOf(
+        ItemColor(R.color.cyan),
+        ItemColor(R.color.green),
+        ItemColor(R.color.orange),
+        ItemColor(R.color.pink),
+        ItemColor(R.color.red),
+        ItemColor(R.color.yellow),
+        ItemColor(R.color.blue),
+        ItemColor(R.color.gray_blue),
+        ItemColor(R.color.light_purple),
+        ItemColor(R.color.light_yellow),
+        ItemColor(R.color.light_green),
+        ItemColor(R.color.light_sea_blue),
+        ItemColor(R.color.sea_blue),
+        ItemColor(R.color.violet),
+    )
+    val iconCategoryItems = listOf(
+        ItemIcon(R.drawable.category_bag),
+        ItemIcon(R.drawable.category_music),
+        ItemIcon(R.drawable.category_bread),
+        ItemIcon(R.drawable.category_home),
+        ItemIcon(R.drawable.category_math),
+        ItemIcon(R.drawable.category_school),
+        ItemIcon(R.drawable.category_megaphone),
+        ItemIcon(R.drawable.category_heart_beat),
+        ItemIcon(R.drawable.category_video_camera),
+        ItemIcon(R.drawable.category_dumbbell),
     )
 
 }

@@ -9,6 +9,8 @@ class CategoryDiffCallBack : DiffUtil.ItemCallback<Category>() {
     }
 
     override fun areContentsTheSame(oldItem: Category, newItem: Category): Boolean {
-        TODO("Not yet implemented")
+        return oldItem.titleCategory == newItem.titleCategory &&
+                oldItem.idIcon == newItem.idIcon &&
+                oldItem.idColor == newItem.idColor
     }
 }
