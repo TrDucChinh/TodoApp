@@ -25,13 +25,14 @@ class CategoryRepository(
         val databaseCategory = getAllCategoryFromDB()
         val localCategory = getDateFromLocal()
         result.addSource(databaseCategory) {dbData ->
-            val combineData = dbData + localItem
+            val combineData = dbData + localCategory.value.orEmpty()
             result.value = combineData
         }
         return result
     }
 
-    suspend fun insertCategory(category: Category) {
+    suspend fun insertCategory(titleCategory: String, idColor: Int, idIcon: Int) {
+        val category = Category(titleCategory = titleCategory, idColor =  idColor, idIcon =  idIcon)
         categoryDao.insertCategory(category)
     }
     suspend fun deleteCategory(category: Category) {

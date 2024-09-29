@@ -1,8 +1,10 @@
 package com.proptit.todoapp.adapter.recyclerviewadapter
 
 import android.annotation.SuppressLint
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -23,6 +25,7 @@ class CategoryRecyclerAdapter(
     }
 
     override fun getItemViewType(position: Int): Int {
+        Log.d("CategoryRecyclerAdapter", "getItemViewType: $position")
         return if (position == currentList.size - 1) {
             TYPE_ADD_CATEGORY
         } else {
@@ -66,9 +69,10 @@ class CategoryRecyclerAdapter(
     ) : RecyclerView.ViewHolder(binding.root) {
         fun bind(category: Category) {
             binding.apply {
+//                Log.d("CategoryRecyclerAdapter", "bind: $category")
                 categoryTitle.text = category.titleCategory
                 categoryIcon.setImageResource(category.idIcon)
-                categoryIcon.setBackgroundColor(category.idColor)
+                categoryIcon.setBackgroundColor(ContextCompat.getColor(root.context, category.idColor))
                 root.setOnClickListener {
                     categoryListener.onCategoryClick(category)
                 }
@@ -84,7 +88,8 @@ class CategoryRecyclerAdapter(
             binding.apply {
                 categoryTitle.text = "Create New"
                 categoryIcon.setImageResource(R.drawable.category_add)
-                categoryIcon.setBackgroundColor(R.color.cyan)
+                categoryIcon.setBackgroundColor(ContextCompat.getColor(root.context, R.color.cyan))
+
                 root.setOnClickListener {
                     categoryListener.onAddCategoryClick()
                 }

@@ -1,6 +1,7 @@
 package com.proptit.todoapp.dialogfragment
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -52,6 +53,7 @@ class CategoryPickerFragment(
             layoutManager = GridLayoutManager(context, 3)
         }
         categoryViewModel.getAllCategory().observe(viewLifecycleOwner) {
+            Log.d("CategoryPickerFragment", "initComponent: $it")
             categoryAdapter.submitList(it)
         }
     }

@@ -12,9 +12,6 @@ class CategoryViewModel(application: Application) : ViewModel() {
     private val categoryRepository: CategoryRepository = CategoryRepository(application, List.categoryItems)
 
     fun getAllCategory() = categoryRepository.getAllCategory()
-    suspend fun insertCategory(category: Category) = categoryRepository.insertCategory(category)
-    suspend fun deleteCategory(category: Category) = categoryRepository.deleteCategory(category)
-    suspend fun updateCategory(category: Category) = categoryRepository.updateCategory(category)
 
     class CategoryViewModelFactory(private val application: Application) : ViewModelProvider.Factory{
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
