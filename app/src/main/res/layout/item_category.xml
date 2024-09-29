@@ -7,7 +7,7 @@
     android:layout_marginVertical="5dp"
     android:layout_height="wrap_content">
 
-    <androidx.appcompat.widget.AppCompatImageView
+    <ImageView
         android:id="@+id/category_icon"
         android:layout_width="125dp"
         android:layout_height="100dp"
