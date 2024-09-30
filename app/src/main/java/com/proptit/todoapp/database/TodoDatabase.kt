@@ -5,6 +5,8 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.proptit.todoapp.database.category.CategoryDao
+import com.proptit.todoapp.database.subtask.SubTaskDao
+import com.proptit.todoapp.database.task.TaskDao
 import com.proptit.todoapp.model.Category
 import com.proptit.todoapp.model.Subtask
 import com.proptit.todoapp.model.Task
@@ -17,6 +19,8 @@ import com.proptit.todoapp.model.Task
 abstract class TodoDatabase : RoomDatabase() {
     //    abstract fun taskDao() : TaskDao
     abstract fun categoryDao(): CategoryDao
+    abstract fun taskDao(): TaskDao
+    abstract fun subTaskDao(): SubTaskDao
 
     companion object {
         @Volatile
