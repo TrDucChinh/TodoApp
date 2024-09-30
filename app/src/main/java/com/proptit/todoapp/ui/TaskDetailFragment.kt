@@ -38,9 +38,10 @@ class TaskDetailFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initComponent()
     }
 
-    fun initComponent() {
+    private fun initComponent() {
         binding.apply {
             // Set up the toolbar
             toolbar.setNavigationOnClickListener {
