@@ -5,10 +5,18 @@
     android:id="@+id/nav_graph"
     app:startDestination="@id/mainFragment"
     >
-
-
     <fragment
         android:id="@+id/mainFragment"
         android:name="com.proptit.todoapp.ui.MainFragment"
-        android:label="MainFragment" />
+        android:label="MainFragment" >
+        <action
+            android:id="@+id/action_mainFragment_to_taskDetailFragment"
+            app:destination="@id/taskDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/taskDetailFragment"
+        android:name="com.proptit.todoapp.ui.TaskDetailFragment"
+        android:label="AddTaskFragment"
+        tools:layout="@layout/fragment_task_detail"
+        />
 </navigation>

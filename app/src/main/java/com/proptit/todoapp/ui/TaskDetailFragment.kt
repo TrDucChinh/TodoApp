@@ -1,95 +1,64 @@
-package com.proptit.todoapp.dialogfragment
+package com.proptit.todoapp.ui
 
 import android.os.Bundle
-import android.util.Log
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
-import androidx.fragment.app.activityViewModels
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
-import com.proptit.todoapp.databinding.FragmentAddTaskBinding
+import com.proptit.todoapp.databinding.FragmentTaskDetailBinding
+import com.proptit.todoapp.dialogfragment.CategoryPickerFragment
+import com.proptit.todoapp.dialogfragment.CreateCategoryFragment
+import com.proptit.todoapp.dialogfragment.PriorityPickerFragment
 import com.proptit.todoapp.interfaces.ICategoryListener
 import com.proptit.todoapp.interfaces.IPriorityListener
 import com.proptit.todoapp.model.Category
-import com.proptit.todoapp.viewmodel.AddTaskViewModel
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
 import java.util.Locale
 
-class AddTaskFragment() : BottomSheetDialogFragment() {
-    private var _binding: FragmentAddTaskBinding? = null
-    private val binding get() = _binding!!
+class TaskDetailFragment : Fragment() {
     private var selectedPriority = -1
     private var selectedCategory = -1
-    private var dueDate: Date? = null
-    private var dueTime: Date? = null
-    private val addTaskViewModel: AddTaskViewModel by activityViewModels {
-        AddTaskViewModel.AddTaskViewModelFactory(requireActivity().application)
-    }
-    private var hour = 0
-    private var minute = 0
-
-    companion object {
-        const val TAG = "AddTaskFragment"
-    }
+    private var _binding: FragmentTaskDetailBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
         // Inflate the layout for this fragment
-        _binding = FragmentAddTaskBinding.inflate(inflater, container, false)
+        _binding = FragmentTaskDetailBinding.inflate(inflater, container, false)
+
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initBehavior()
-
+        initComponent()
     }
 
-    private fun initBehavior() {
+    private fun initComponent() {
         binding.apply {
-            btnSetTime.setOnClickListener {
+            // Set up the toolbar
+            toolbar.setNavigationOnClickListener {
+                requireActivity().onBackPressed()
+            }
+
+            tvDueDate.setOnClickListener {
                 setTime()
             }
-            btnSetPriority.setOnClickListener {
-                setPriority()
-            }
-            btnSetCategory.setOnClickListener {
+            tvCategory.setOnClickListener {
                 setCategory()
             }
-            btnSend.setOnClickListener {
-                addTaskViewModel.insertTask(
-                    etTaskName.text.toString(),
-                    etTaskDescription.text.toString(),
-                    dueDate!!,
-                    dueTime!!,
-                    selectedCategory,
-                    false,
-                    selectedPriority
-                )
-                dismiss()
+            tvPriority.setOnClickListener {
+                setPriority()
             }
-
         }
-    }
-
-    private fun setPriority() {
-        val priorityPicker = PriorityPickerFragment(object : IPriorityListener {
-            override fun onClickPriority(priority: Int) {
-                priority.let {
-                    selectedPriority = it
-                    println(it)
-                }
-            }
-        }, selectedPriority)
-        priorityPicker.show(childFragmentManager, PriorityPickerFragment.TAG)
     }
 
     private fun setTime() {
@@ -97,13 +66,10 @@ class AddTaskFragment() : BottomSheetDialogFragment() {
             .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
             .build()
         datePicker.addOnPositiveButtonClickListener { selection ->
-//            val sdf = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
-//            val date = Date(selection)
-//            Log.e("AddTaskFragment", "onPositiveButtonClick: $date")
-//            val formattedDate = sdf.format(date)
-//            println(formattedDate)
-            dueDate = Date(selection)
-            Log.e("AddTaskFragment", "onPositiveButtonClick: $dueDate")
+            val sdf = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+            val date = Date(selection)
+            val formattedDate = sdf.format(date)
+            println(formattedDate)
             // Hiển thị TimePicker sau khi chọn ngày
             showTimePicker()
         }
@@ -118,10 +84,9 @@ class AddTaskFragment() : BottomSheetDialogFragment() {
             .build()
 
         timePicker.addOnPositiveButtonClickListener {
-            dueTime = SimpleDateFormat("HH:mm", Locale.getDefault()).parse("${timePicker.hour}:${timePicker.minute}")
-
-            Log.e("AddTaskFragment", "onPositiveButtonClick: $dueTime")
-
+            val hour = timePicker.hour
+            val minute = timePicker.minute
+            println("$hour:$minute") // In ra giờ và phút đã chọn
         }
 
         timePicker.show(childFragmentManager, "TIME_PICKER")
@@ -132,10 +97,7 @@ class AddTaskFragment() : BottomSheetDialogFragment() {
             object : ICategoryListener {
                 override fun onAddCategoryClick() {
                     val createCategoryFragment = CreateCategoryFragment()
-                    createCategoryFragment.show(
-                        childFragmentManager,
-                        CreateCategoryFragment.TAG
-                    )
+                    createCategoryFragment.show(childFragmentManager, CreateCategoryFragment.TAG)
                     createCategoryFragment.setStyle(
                         DialogFragment.STYLE_NORMAL,
                         android.R.style.Theme_Black_NoTitleBar_Fullscreen
@@ -144,14 +106,24 @@ class AddTaskFragment() : BottomSheetDialogFragment() {
 
                 override fun onCategoryClick(category: Category) {
                     selectedCategory = category.id
-                    println(selectedCategory)
-                    println(category)
                 }
             },
             selectedCategory
         )
         categoryPicker.show(childFragmentManager, CategoryPickerFragment.TAG)
 //        categoryPicker.setStyle(DialogFragment.STYLE_NORMAL, android.R.style.Theme_Panel)
+    }
+
+    private fun setPriority() {
+        val priorityPicker = PriorityPickerFragment(object : IPriorityListener {
+            override fun onClickPriority(priority: Int) {
+                priority.let {
+                    selectedPriority = it
+                    println(it)
+                }
+            }
+        }, selectedPriority)
+        priorityPicker.show(childFragmentManager, PriorityPickerFragment.TAG)
     }
 
     override fun onDestroy() {

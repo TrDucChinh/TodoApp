@@ -9,7 +9,7 @@ import androidx.viewpager2.widget.ViewPager2
 import com.proptit.todoapp.adapter.viewpageradapter.FragmentMainViewPager
 import com.proptit.todoapp.databinding.FragmentMainBinding
 import com.proptit.todoapp.dialogfragment.AddTaskFragment
-import com.proptit.todoapp.utils.List
+import com.proptit.todoapp.utils.ListData
 import me.ibrahimsn.lib.SmoothBottomBar
 
 class MainFragment : Fragment() {
@@ -44,7 +44,7 @@ class MainFragment : Fragment() {
         pagerAdapter = FragmentMainViewPager(
             childFragmentManager,
             lifecycle,
-            List.fragmentList
+            ListData.fragmentList
         )
         viewPager.adapter = pagerAdapter
     }
