@@ -3,6 +3,7 @@ package com.proptit.todoapp.model
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
+import java.io.Serializable
 import java.util.Date
 
 @Entity(
@@ -21,9 +22,10 @@ data class Task(
     val id: Int = 0,
     val title: String,
     val description: String,
+    var subTask: List<Subtask> = emptyList(),
     val dueDate: Date,
     val dueTime: Date,
     val categoryId: Int,
     var isFinish: Boolean,
     val taskPriority: Int,
-)
+) : Serializable

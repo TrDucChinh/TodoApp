@@ -20,7 +20,7 @@
         tools:layout="@layout/fragment_task_detail"
         >
         <argument
-            android:name="taskId"
-            app:argType="long" />
+            android:name="TaskArgs"
+            app:argType="com.proptit.todoapp.model.Task" />
     </fragment>
 </navigation>

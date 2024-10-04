@@ -103,7 +103,7 @@ class DayTaskRecyclerAdapter(
 
                 // Xử lý click trên item
                 root.setOnClickListener {
-                    taskListener.onTask(task.id.toLong())
+                    taskListener.onTask(task)
                 }
             }
         }
