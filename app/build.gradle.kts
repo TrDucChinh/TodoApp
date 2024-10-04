@@ -9,7 +9,9 @@ plugins {
 android {
     namespace = "com.proptit.todoapp"
     compileSdk = 34
-
+    buildFeatures {
+        viewBinding = true
+    }
     defaultConfig {
         applicationId = "com.proptit.todoapp"
         minSdk = 28
@@ -95,9 +97,13 @@ dependencies {
     // Jetpack Compose Integration
     implementation(libs.androidx.navigation.compose)
 
+    //SmoothBottomBar
+    implementation("com.github.ibrahimsn98:SmoothBottomBar:1.7.6")
 
-    implementation ("com.github.ibrahimsn98:SmoothBottomBar:1.7.6")
-
+    //Circle Image View
+    implementation ("de.hdodenhof:circleimageview:3.1.0")
+    // Gson
+    implementation ("com.google.code.gson:gson:2.10.1")
 
 
 }
