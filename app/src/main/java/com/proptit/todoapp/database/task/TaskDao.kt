@@ -2,6 +2,7 @@ package com.proptit.todoapp.database.task
 
 import androidx.lifecycle.LiveData
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
@@ -16,6 +17,12 @@ interface TaskDao {
 
     @Query("SELECT * FROM task")
     fun getAllTask(): LiveData<List<Task>>
+
+    @Query("SELECT * FROM task WHERE id = :taskId")
+    fun getTaskById(taskId: Long): LiveData<Task>
+
+    @Delete
+    suspend fun deleteTask(task: Task)
 
 //    @Query("SELECT * FROM task WHERE dueDate >= strftime('%s', 'now', 'start of day') * 1000 AND dueDate < strftime('%s', 'now', '+1 day', 'start of day') * 1000 AND isFinish = 0")
     @Query(" SELECT * FROM task WHERE date(dueDate / 1000, 'unixepoch') = date('now', 'localtime') AND isFinish = 0 ORDER BY dueDate ASC, dueTime ASC")
