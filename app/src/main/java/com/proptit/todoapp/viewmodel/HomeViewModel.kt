@@ -22,6 +22,12 @@ class HomeViewModel(application: Application) : ViewModel() {
             taskRepository.updateTask(task)
         }
     }
+    fun deleteTask(task: Task){
+        viewModelScope.launch {
+            taskRepository.deleteTask(task)
+        }
+    }
+    fun getTaskById(id: Long) = taskRepository.getTaskById(id)
 
     fun getAllCompletedTasks() = taskRepository.getAllCompletedTasks()
     fun getAllUncompletedTasks() = taskRepository.getAllUncompletedTasks()
@@ -35,5 +41,8 @@ class HomeViewModel(application: Application) : ViewModel() {
             throw IllegalArgumentException("Unknown ViewModel class")
         }
     }
+
+
+
 
 }

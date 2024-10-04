@@ -102,6 +102,8 @@ dependencies {
 
     //Circle Image View
     implementation ("de.hdodenhof:circleimageview:3.1.0")
+    // Gson
+    implementation ("com.google.code.gson:gson:2.10.1")
 
 
 }

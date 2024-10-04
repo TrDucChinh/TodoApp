@@ -36,14 +36,16 @@ class HomeFragment : Fragment() {
 
     private val taskListener = object : ITaskListener {
         override fun onTask(task: Task) {
-            val action = MainFragmentDirections.actionMainFragmentToTaskDetailFragment()
+            val action = MainFragmentDirections.actionMainFragmentToTaskDetailFragment(task)
             findNavController().navigate(action)
         }
 
         override fun onTaskStatusChange(task: Task) {
             homeViewModel.updateTask(task)
             loadDataTask(selectedDayTask ?: "Today")  // Cập nhật lại danh sách task hàng ngày
-            loadDataProgress(selectedProgressTask ?: "On Progress")  // Cập nhật lại danh sách task tiến độ
+            loadDataProgress(
+                selectedProgressTask ?: "On Progress"
+            )  // Cập nhật lại danh sách task tiến độ
         }
     }
 
@@ -65,7 +67,7 @@ class HomeFragment : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View? {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         return binding.root
@@ -73,6 +75,12 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        if (savedInstanceState != null) {
+            selectedDayTask = savedInstanceState.getString("selectedDayTask", "Today")
+            selectedProgressTask =
+                savedInstanceState.getString("selectedProgressTask", "On Progress")
+        }
         initComponent()
     }
 
@@ -84,8 +92,11 @@ class HomeFragment : Fragment() {
             if (tasks.isEmpty()) {
                 binding.allEmptyTask.visibility = View.VISIBLE
                 binding.clTask.visibility = View.GONE
+                binding.rvDayTask.visibility = View.GONE
+                binding.rvDayProgress.visibility = View.GONE
+                binding.emptyTask.visibility = View.GONE
+                binding.emptyTaskProgress.visibility = View.GONE
             } else {
-                Log.e("HomeFragment", "initComponent: ${tasks}")
                 binding.clTask.visibility = View.VISIBLE
                 binding.allEmptyTask.visibility = View.GONE
                 setupAutoCompleteTextViews()
@@ -94,8 +105,16 @@ class HomeFragment : Fragment() {
     }
 
     private fun setupAdapters() {
-        val arrayDayAdapter = ArrayAdapter(requireContext(), R.layout.simple_spinner_dropdown_item, ListData.dayDropDownItem)
-        val arrayProgressionAdapter = ArrayAdapter(requireContext(), R.layout.simple_spinner_dropdown_item, ListData.progressionDropDownItem)
+        val arrayDayAdapter = ArrayAdapter(
+            requireContext(),
+            R.layout.simple_spinner_dropdown_item,
+            ListData.dayDropDownItem
+        )
+        val arrayProgressionAdapter = ArrayAdapter(
+            requireContext(),
+            R.layout.simple_spinner_dropdown_item,
+            ListData.progressionDropDownItem
+        )
 
         binding.actvDayTask.setAdapter(arrayDayAdapter)
         binding.actvProgress.setAdapter(arrayProgressionAdapter)
@@ -158,20 +177,25 @@ class HomeFragment : Fragment() {
 
         dayTaskObserver = Observer<List<Task>> { tasks ->
             if (tasks.isNotEmpty()) {
-                dayTaskRecyclerAdapter.submitList(tasks) // Cập nhật danh sách
                 fadeIn(binding.rvDayTask)
                 fadeOut(binding.emptyTask)
             } else {
                 fadeOut(binding.rvDayTask)
                 fadeIn(binding.emptyTask)
             }
+            dayTaskRecyclerAdapter.submitList(tasks)
         }
 
         when (selectedItem) {
-            "Today" -> homeViewModel.getAllTaskToday().observe(viewLifecycleOwner, dayTaskObserver!!)
-            "Tomorrow" -> homeViewModel.getAllTaskTomorrow().observe(viewLifecycleOwner, dayTaskObserver!!)
+            "Today" -> homeViewModel.getAllTaskToday()
+                .observe(viewLifecycleOwner, dayTaskObserver!!)
+
+            "Tomorrow" -> homeViewModel.getAllTaskTomorrow()
+                .observe(viewLifecycleOwner, dayTaskObserver!!)
+
             "Week" -> homeViewModel.getAllTaskWeek().observe(viewLifecycleOwner, dayTaskObserver!!)
-            "Month" -> homeViewModel.getAllTaskMonth().observe(viewLifecycleOwner, dayTaskObserver!!)
+            "Month" -> homeViewModel.getAllTaskMonth()
+                .observe(viewLifecycleOwner, dayTaskObserver!!)
         }
     }
 
@@ -195,11 +219,15 @@ class HomeFragment : Fragment() {
                 fadeOut(binding.rvDayProgress)
                 fadeIn(binding.emptyTaskProgress)
             }
+            progressTaskAdapter.submitList(tasks)
         }
 
         when (selectedItem) {
-            "On Progress" -> homeViewModel.getAllUncompletedTasks().observe(viewLifecycleOwner, progressTaskObserver!!)
-            "Completed" -> homeViewModel.getAllCompletedTasks().observe(viewLifecycleOwner, progressTaskObserver!!)
+            "On Progress" -> homeViewModel.getAllUncompletedTasks()
+                .observe(viewLifecycleOwner, progressTaskObserver!!)
+
+            "Completed" -> homeViewModel.getAllCompletedTasks()
+                .observe(viewLifecycleOwner, progressTaskObserver!!)
         }
     }
 
@@ -215,6 +243,11 @@ class HomeFragment : Fragment() {
         }.start()
     }
 
+    override fun onResume() {
+        super.onResume()
+        setupAdapters()
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
@@ -222,3 +255,5 @@ class HomeFragment : Fragment() {
         progressTaskObserver = null
     }
 }
+
+

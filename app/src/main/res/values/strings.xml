@@ -33,5 +33,7 @@
     <string name="default_prio">Default\t</string>
     <string name="sub_task">\tSub - Task</string>
     <string name="add_sub_task">Add Sub - Task</string>
-    <string name="tdisplay_category">\tdisplay category</string>>
+    <string name="tdisplay_category">\tdisplay category</string>
+    <string name="subtask_name">Subtask Name</string>
+    <string name="new_subtask">New subtask</string>>
 </resources>

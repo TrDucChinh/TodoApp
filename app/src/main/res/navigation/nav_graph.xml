@@ -18,5 +18,9 @@
         android:name="com.proptit.todoapp.ui.TaskDetailFragment"
         android:label="AddTaskFragment"
         tools:layout="@layout/fragment_task_detail"
-        />
+        >
+        <argument
+            android:name="TaskArgs"
+            app:argType="com.proptit.todoapp.model.Task" />
+    </fragment>
 </navigation>

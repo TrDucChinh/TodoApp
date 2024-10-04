@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/Widget.Material3.CardView.Filled"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardCornerRadius="24dp"
+    android:layout_marginTop="8dp"
+    app:cardBackgroundColor="@color/gray">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp">
+        <CheckBox
+            android:id="@+id/cb_subtask_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/CustomCheckBox"
+            />
+        <TextView
+            android:id="@+id/tv_subtask_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@+id/cb_subtask_status"
+            android:text="@string/subtask_name"
+            android:textSize="20sp"
+            android:fontFamily="@font/inter_medium"
+            android:textColor="#FFFFFF"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="8dp"
+            android:maxLines="1"
+            />
+        <ImageView
+            android:id="@+id/iv_remove_subtask"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/ic_delete"/>
+
+    </RelativeLayout>
+
+</com.google.android.material.card.MaterialCardView>

@@ -32,7 +32,9 @@ class TaskRepository(application: Application) {
     }
 
     suspend fun updateTask(task: Task) = taskDao.updateTask(task)
+    suspend fun deleteTask(task: Task) = taskDao.deleteTask(task)
 
+    fun getTaskById(taskId: Long) = taskDao.getTaskById(taskId)
 
     fun getAllTask() = taskDao.getAllTask()
     fun getAllTaskTomorrow() = taskDao.getAllTaskTomorrow()
