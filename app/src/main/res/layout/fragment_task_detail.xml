@@ -15,16 +15,16 @@
         app:navigationIcon="@drawable/ic_back"
         app:title="Task Detail"
         app:titleCentered="true"
-        app:titleTextColor="@color/white" >
+        app:titleTextColor="@color/white">
+
         <ImageButton
             android:id="@+id/action_delete"
-            android:layout_marginRight="10dp"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="end"
-            android:src="@drawable/ic_delete"
+            android:layout_marginRight="10dp"
             android:background="@android:color/transparent"
-            />
+            android:src="@drawable/ic_delete" />
 
     </com.google.android.material.appbar.MaterialToolbar>
 
@@ -51,12 +51,12 @@
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/et_task_title"
-                android:textColor="@color/white"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="16dp"
                 android:background="@null"
                 android:hint="@string/task_title"
+                android:textColor="@color/white"
                 android:textColorHint="@color/white"
                 android:textSize="22sp"
                 android:textStyle="bold"
@@ -67,13 +67,13 @@
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/et_task_description"
-                android:textColor="@color/white"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="16dp"
                 android:layout_marginTop="8dp"
                 android:background="@null"
                 android:hint="@string/description"
+                android:textColor="@color/white"
                 android:textColorHint="@color/white"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/cb_task"
@@ -218,32 +218,35 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/tv_add_subtask"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/chose_icon_category_background_btn"
-                    android:focusable="false"
-                    android:focusableInTouchMode="false"
-                    android:paddingHorizontal="15dp"
-                    android:paddingVertical="10dp"
-                    android:text="@string/add_sub_task"
-                    android:textAllCaps="false"
-                    android:textColor="@color/white"
-                    android:textSize="18sp"
-
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_subtask"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/cl_subtask" />
+                android:layout_marginHorizontal="16dp"
+                app:layout_constraintTop_toBottomOf="@id/cl_subtask"
 
+                />
+
+            <EditText
+                android:id="@+id/ed_add_subtask"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="20dp"
+                android:background="@color/gray"
+                android:hint="@string/new_subtask"
+                android:imeOptions="actionDone"
+                android:importantForAutofill="no"
+                android:inputType="textCapSentences|textShortMessage|textNoSuggestions"
+                android:maxLines="1"
+                android:padding="16dp"
+                android:textColor="@color/white"
+                android:textColorHint="@color/white"
+                android:textSize="20sp"
+                app:layout_constraintTop_toBottomOf="@id/rv_subtask" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

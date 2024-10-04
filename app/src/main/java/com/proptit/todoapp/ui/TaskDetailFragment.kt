@@ -13,12 +13,15 @@ import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
 import com.proptit.todoapp.R
+import com.proptit.todoapp.adapter.recyclerviewadapter.SubtasksAdapter
 import com.proptit.todoapp.database.category.CategoryRepository
 import com.proptit.todoapp.databinding.FragmentTaskDetailBinding
 import com.proptit.todoapp.dialogfragment.CategoryPickerFragment
@@ -27,9 +30,13 @@ import com.proptit.todoapp.dialogfragment.PriorityPickerFragment
 import com.proptit.todoapp.interfaces.ICategoryListener
 import com.proptit.todoapp.interfaces.IPriorityListener
 import com.proptit.todoapp.model.Category
+import com.proptit.todoapp.model.Subtask
 import com.proptit.todoapp.model.Task
+import com.proptit.todoapp.utils.KeyBoard
+import com.proptit.todoapp.utils.KeyBoard.onDone
 import com.proptit.todoapp.utils.ListData
 import com.proptit.todoapp.viewmodel.DetailTaskViewModel
+import com.proptit.todoapp.viewmodel.HomeViewModel
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
@@ -40,18 +47,31 @@ class TaskDetailFragment : Fragment() {
     private var selectedCategory = -1
     private var dueDate: Date? = null
     private var dueTime: Date? = null
+
+    private lateinit var task : Task
+    private val args : TaskDetailFragmentArgs by navArgs()
+    private lateinit var subtasksAdapter: SubtasksAdapter
+
     private var _binding: FragmentTaskDetailBinding? = null
     private val binding get() = _binding!!
+
     private val categoryRepository: CategoryRepository by lazy {
         CategoryRepository(requireActivity().application, ListData.categoryItems)
     }
-    private val taskDetailTaskViewModel: DetailTaskViewModel by activityViewModels {
-        DetailTaskViewModel.DetailTaskViewModelFactory(requireActivity().application)
+    private val homeViewModel: HomeViewModel by activityViewModels() {
+        HomeViewModel.HomeViewModelFactory(requireActivity().application)
     }
-    private val args by navArgs<TaskDetailFragmentArgs>()
-    private val task by lazy {
-        taskDetailTaskViewModel.getTaskById(args.taskId)
+
+
+    private val taskDetailTaskViewModel by lazy {
+        ViewModelProvider(
+            this,
+            DetailTaskViewModel.DetailTaskViewModelFactory(task)
+        )[DetailTaskViewModel::class.java]
     }
+
+
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -61,12 +81,6 @@ class TaskDetailFragment : Fragment() {
         _binding = FragmentTaskDetailBinding.inflate(inflater, container, false)
         setUpOnBackPress()
         return binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        initComponent()
-        initBehavior()
     }
 
     private fun setUpOnBackPress() {
@@ -81,30 +95,48 @@ class TaskDetailFragment : Fragment() {
         )
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        task = args.taskArgs
+        initComponent()
+        initBehavior()
+    }
+
+
     private fun initComponent() {
-        binding.apply {
-
-            // Init data
-
-            task.observe(viewLifecycleOwner) {
-                cbTask.isChecked = it.isFinish
-                etTaskTitle.setText(it.title)
-                etTaskDescription.setText(it.description)
-                val date = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(it.dueDate)
-                val time = SimpleDateFormat("HH:mm", Locale.getDefault()).format(it.dueTime)
-                tvDueDate.text = "$date $time"
-                val category = categoryRepository.getCategoryById(it.categoryId)
-                category.observe(viewLifecycleOwner) {
-                    tvCategory.text = "\t ${it.titleCategory}"
-                    tvCategory.setCompoundDrawablesWithIntrinsicBounds(it.idIcon, 0, 0, 0)
-                }
-                dueDate = it.dueDate
-                dueTime = it.dueTime
-                selectedCategory = it.categoryId
-                selectedPriority = it.taskPriority
-                tvPriority.text = "\t ${it.taskPriority}"
-                tvPriority.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_flag, 0, 0, 0)
+        subtasksAdapter = SubtasksAdapter(
+            onUpdate = { position ->
+                onUpdatedSubtask(position)
+            },
+            onRemove = { position ->
+                onRemoveSubtask(position)
             }
+        )
+
+        subtasksAdapter.updateData(task.subTask)
+
+
+        binding.apply {
+            rvSubtask.adapter = subtasksAdapter
+            rvSubtask.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+            cbTask.isChecked = task.isFinish
+            etTaskTitle.setText(task.title)
+            etTaskDescription.setText(task.description)
+            val date = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(task.dueDate)
+            val time = SimpleDateFormat("HH:mm", Locale.getDefault()).format(task.dueTime)
+            tvDueDate.text = "$date $time"
+            val category = categoryRepository.getCategoryById(task.categoryId)
+            category.observe(viewLifecycleOwner) {
+                tvCategory.text = "\t ${it.titleCategory}"
+                tvCategory.setCompoundDrawablesWithIntrinsicBounds(it.idIcon, 0, 0, 0)
+            }
+            dueDate = task.dueDate
+            dueTime = task.dueTime
+            selectedCategory = task.categoryId
+            selectedPriority = task.taskPriority
+            tvPriority.text = "\t ${task.taskPriority}"
+            tvPriority.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_flag, 0, 0, 0)
+
 
         }
     }
@@ -114,6 +146,15 @@ class TaskDetailFragment : Fragment() {
             toolbar.setNavigationOnClickListener {
                 onBack()
             }
+
+            edAddSubtask.onDone {
+                KeyBoard.hideSoftKeyboard(binding.root, requireActivity())
+                addSubtask()
+            }
+            taskDetailTaskViewModel._subTasks.observe(viewLifecycleOwner) {
+                subtasksAdapter.updateData(it)
+            }
+
             tvDueDate.setOnClickListener {
                 setTime()
             }
@@ -127,47 +168,83 @@ class TaskDetailFragment : Fragment() {
                 deleteTask()
             }
 
-
         }
     }
 
-    private fun deleteTask(){
-        AlertDialog.Builder(requireContext())
-            .setTitle("Delete Task")
-            .setMessage("Do you want to delete this task?")
-            .setPositiveButton("Yes") { dialog, which ->
-                taskDetailTaskViewModel.deleteTask(task.value!!)
-                findNavController().navigateUp()
-            }
-            .setNegativeButton("No") { dialog, which ->
-                dialog.dismiss()
-            }
-            .create()
-            .show()
+    private fun addSubtask() {
+        val subtask = Subtask(binding.edAddSubtask.text.toString(), false)
+        taskDetailTaskViewModel.addSubtask(subtask)
+        binding.edAddSubtask.apply {
+            text.clear()
+            clearFocus()
+        }
     }
+
+    private fun deleteTask() {
+        context?.let {
+            AlertDialog.Builder(it)
+                .setTitle("Delete task")
+                .setMessage("Do you want to delete this task?")
+                .setIcon(R.drawable.ic_delete)
+                .setPositiveButton("Yes") { _, _ ->
+                    homeViewModel.deleteTask(task)  // Delete the task
+                    findNavController().popBackStack()  // Navigate back
+                }
+                .setNegativeButton("No") { dialog, _ ->
+                    dialog.dismiss()
+                }
+                .show()
+        } ?: Log.e("TaskDetailFragment", "deleteTask: An error has occurred!! Please restart the app.")
+    }
+
     private fun onBack() {
-        AlertDialog.Builder(requireContext())
-            .setTitle("Update Task")
-            .setMessage("Do you want to update this task?")
-            .setPositiveButton("Yes") { dialog, which ->
-                taskDetailTaskViewModel.updateTask(
-                    task.value!!.copy(
-                        title = binding.etTaskTitle.text.toString(),
-                        description = binding.etTaskDescription.text.toString(),
-                        dueDate = dueDate!!,
-                        dueTime = dueTime!!,
-                        categoryId = selectedCategory,
-                        taskPriority = selectedPriority,
-                        isFinish = binding.cbTask.isChecked
-                    )
+        updateDetailTaskViewModel()
+        if (taskDetailTaskViewModel.isChanged()) {
+            context?.let {
+                AlertDialog.Builder(it)
+                    .setTitle("Save changes")
+                    .setMessage("Do you want to save changes?")
+                    .setIcon(R.drawable.ic_save)
+                    .setPositiveButton("Yes") { _, _ ->
+                        homeViewModel.updateTask(taskDetailTaskViewModel.getNewTask())
+                        findNavController().popBackStack()
+                    }
+                    .setNegativeButton("No") { _, _ ->
+                        findNavController().popBackStack()
+                    }
+                    .setNeutralButton("Cancel") { dialog, _ ->
+                        dialog.dismiss()
+                    }
+                    .show()
+            } ?: {
+                Log.e(
+                    "TaskDetailFragment",
+                    "onBack: An error has occurred!! Please restart the app."
                 )
-                findNavController().navigateUp()
             }
-            .setNegativeButton("No") { dialog, which ->
-                findNavController().navigateUp()
-            }
-            .create()
-            .show()
+        } else {
+            findNavController().popBackStack()
+        }
+    }
+
+    private fun updateDetailTaskViewModel() {
+        taskDetailTaskViewModel.apply {
+            newTitle = binding.etTaskTitle.text.toString().trim()
+            newDescription = binding.etTaskDescription.text.toString().trim()
+            newIsFinished = binding.cbTask.isChecked
+            newCategoryId = selectedCategory
+            newTaskPriority = selectedPriority
+            newDueDate = dueDate!!
+            newDueTime = dueTime!!
+        }
+    }
+
+    private fun onUpdatedSubtask(position: Int) {
+        taskDetailTaskViewModel.onUpdatedSubtask(position)
+    }
+
+    private fun onRemoveSubtask(position: Int) {
+        taskDetailTaskViewModel.onRemoveSubtask(position)
     }
 
     private fun setTime() {

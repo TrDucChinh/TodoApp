@@ -35,8 +35,8 @@ class HomeFragment : Fragment() {
     }
 
     private val taskListener = object : ITaskListener {
-        override fun onTask(taskId: Long) {
-            val action = MainFragmentDirections.actionMainFragmentToTaskDetailFragment(taskId)
+        override fun onTask(task: Task) {
+            val action = MainFragmentDirections.actionMainFragmentToTaskDetailFragment(task)
             findNavController().navigate(action)
         }
 
@@ -92,8 +92,11 @@ class HomeFragment : Fragment() {
             if (tasks.isEmpty()) {
                 binding.allEmptyTask.visibility = View.VISIBLE
                 binding.clTask.visibility = View.GONE
+                binding.rvDayTask.visibility = View.GONE
+                binding.rvDayProgress.visibility = View.GONE
+                binding.emptyTask.visibility = View.GONE
+                binding.emptyTaskProgress.visibility = View.GONE
             } else {
-                Log.e("HomeFragment", "initComponent: ${tasks}")
                 binding.clTask.visibility = View.VISIBLE
                 binding.allEmptyTask.visibility = View.GONE
                 setupAutoCompleteTextViews()
