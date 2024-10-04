@@ -17,7 +17,7 @@ import com.proptit.todoapp.viewmodel.CategoryViewModel
 
 class CategoryPickerFragment(
     private val categoryListener: ICategoryListener,
-    /*private val selectedCategory: Int,*/
+    private val selectedCategory: Int,
 ) : DialogFragment() {
     private var _binding: FragmentCategoryPickerBinding? = null
     private val binding get() = _binding!!
@@ -53,9 +53,14 @@ class CategoryPickerFragment(
             layoutManager = GridLayoutManager(context, 3)
         }
         categoryViewModel.getAllCategory().observe(viewLifecycleOwner) {
-            Log.d("CategoryPickerFragment", "initComponent: $it")
             categoryAdapter.submitList(it)
         }
+        binding.apply {
+            addBtn.setOnClickListener {
+                dismiss()
+            }
+        }
+
     }
     override fun onStart() {
         super.onStart()

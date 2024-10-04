@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.activityViewModels
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.timepicker.MaterialTimePicker
@@ -14,6 +15,7 @@ import com.proptit.todoapp.databinding.FragmentAddTaskBinding
 import com.proptit.todoapp.interfaces.ICategoryListener
 import com.proptit.todoapp.interfaces.IPriorityListener
 import com.proptit.todoapp.model.Category
+import com.proptit.todoapp.viewmodel.AddTaskViewModel
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
@@ -24,6 +26,11 @@ class AddTaskFragment() : BottomSheetDialogFragment() {
     private val binding get() = _binding!!
     private var selectedPriority = -1
     private var selectedCategory = -1
+    private var dueDate: Date? = null
+    private var dueTime: Date? = null
+    private val addTaskViewModel: AddTaskViewModel by activityViewModels {
+        AddTaskViewModel.AddTaskViewModelFactory(requireActivity().application)
+    }
     private var hour = 0
     private var minute = 0
 
@@ -33,7 +40,7 @@ class AddTaskFragment() : BottomSheetDialogFragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View? {
         // Inflate the layout for this fragment
         _binding = FragmentAddTaskBinding.inflate(inflater, container, false)
@@ -57,6 +64,18 @@ class AddTaskFragment() : BottomSheetDialogFragment() {
             btnSetCategory.setOnClickListener {
                 setCategory()
             }
+            btnSend.setOnClickListener {
+                addTaskViewModel.insertTask(
+                    etTaskName.text.toString(),
+                    etTaskDescription.text.toString(),
+                    dueDate!!,
+                    dueTime!!,
+                    selectedCategory,
+                    false,
+                    selectedPriority
+                )
+                dismiss()
+            }
 
         }
     }
@@ -78,10 +97,13 @@ class AddTaskFragment() : BottomSheetDialogFragment() {
             .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
             .build()
         datePicker.addOnPositiveButtonClickListener { selection ->
-            val sdf = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
-            val date = Date(selection)
-            val formattedDate = sdf.format(date)
-            println(formattedDate)
+//            val sdf = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+//            val date = Date(selection)
+//            Log.e("AddTaskFragment", "onPositiveButtonClick: $date")
+//            val formattedDate = sdf.format(date)
+//            println(formattedDate)
+            dueDate = Date(selection)
+            Log.e("AddTaskFragment", "onPositiveButtonClick: $dueDate")
             // Hiển thị TimePicker sau khi chọn ngày
             showTimePicker()
         }
@@ -96,9 +118,10 @@ class AddTaskFragment() : BottomSheetDialogFragment() {
             .build()
 
         timePicker.addOnPositiveButtonClickListener {
-            val hour = timePicker.hour
-            val minute = timePicker.minute
-            println("$hour:$minute") // In ra giờ và phút đã chọn
+            dueTime = SimpleDateFormat("HH:mm", Locale.getDefault()).parse("${timePicker.hour}:${timePicker.minute}")
+
+            Log.e("AddTaskFragment", "onPositiveButtonClick: $dueTime")
+
         }
 
         timePicker.show(childFragmentManager, "TIME_PICKER")
@@ -108,16 +131,24 @@ class AddTaskFragment() : BottomSheetDialogFragment() {
         val categoryPicker = CategoryPickerFragment(
             object : ICategoryListener {
                 override fun onAddCategoryClick() {
-                   val createCategoryFragment = CreateCategoryFragment()
-                    createCategoryFragment.show(childFragmentManager, CreateCategoryFragment.TAG)
-                    createCategoryFragment.setStyle(DialogFragment.STYLE_NORMAL, android.R.style.Theme_Black_NoTitleBar_Fullscreen)
+                    val createCategoryFragment = CreateCategoryFragment()
+                    createCategoryFragment.show(
+                        childFragmentManager,
+                        CreateCategoryFragment.TAG
+                    )
+                    createCategoryFragment.setStyle(
+                        DialogFragment.STYLE_NORMAL,
+                        android.R.style.Theme_Black_NoTitleBar_Fullscreen
+                    )
                 }
 
                 override fun onCategoryClick(category: Category) {
-                    TODO("Not yet implemented")
+                    selectedCategory = category.id
+                    println(selectedCategory)
+                    println(category)
                 }
             },
-            /*selectedCategory*/
+            selectedCategory
         )
         categoryPicker.show(childFragmentManager, CategoryPickerFragment.TAG)
 //        categoryPicker.setStyle(DialogFragment.STYLE_NORMAL, android.R.style.Theme_Panel)

@@ -23,6 +23,7 @@ import java.util.Locale
 
 class TaskDetailFragment : Fragment() {
     private var selectedPriority = -1
+    private var selectedCategory = -1
     private var _binding: FragmentTaskDetailBinding? = null
     private val binding get() = _binding!!
 
@@ -104,10 +105,10 @@ class TaskDetailFragment : Fragment() {
                 }
 
                 override fun onCategoryClick(category: Category) {
-                    TODO("Not yet implemented")
+                    selectedCategory = category.id
                 }
             },
-            /*selectedCategory*/
+            selectedCategory
         )
         categoryPicker.show(childFragmentManager, CategoryPickerFragment.TAG)
 //        categoryPicker.setStyle(DialogFragment.STYLE_NORMAL, android.R.style.Theme_Panel)

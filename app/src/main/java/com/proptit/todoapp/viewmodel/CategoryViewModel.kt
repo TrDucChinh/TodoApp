@@ -3,13 +3,11 @@ package com.proptit.todoapp.viewmodel
 import android.app.Application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.proptit.todoapp.database.TodoDatabase
 import com.proptit.todoapp.database.category.CategoryRepository
-import com.proptit.todoapp.model.Category
-import com.proptit.todoapp.utils.List
+import com.proptit.todoapp.utils.ListData
 
 class CategoryViewModel(application: Application) : ViewModel() {
-    private val categoryRepository: CategoryRepository = CategoryRepository(application, List.categoryItems)
+    private val categoryRepository: CategoryRepository = CategoryRepository(application, ListData.categoryItems)
 
     fun getAllCategory() = categoryRepository.getAllCategory()
 

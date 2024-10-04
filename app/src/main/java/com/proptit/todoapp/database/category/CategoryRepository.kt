@@ -41,5 +41,8 @@ class CategoryRepository(
     suspend fun updateCategory(category: Category) {
         categoryDao.updateCategory(category)
     }
+    fun getCategoryById(categoryId: Int): LiveData<Category> {
+        return categoryDao.getCategoryById(categoryId)
+    }
 
 }
