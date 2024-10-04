@@ -1,6 +1,5 @@
 package com.proptit.todoapp.utils
 
-import android.graphics.drawable.Icon
 import androidx.fragment.app.Fragment
 import com.proptit.todoapp.R
 import com.proptit.todoapp.item.ItemColor
@@ -10,7 +9,7 @@ import com.proptit.todoapp.item.ItemPriority
 import com.proptit.todoapp.model.Category
 
 
-object List {
+object ListData {
     val fragmentList = arrayListOf<Fragment>(
         HomeFragment()
     )
@@ -56,6 +55,16 @@ object List {
         ItemIcon(R.drawable.category_heart_beat),
         ItemIcon(R.drawable.category_video_camera),
         ItemIcon(R.drawable.category_dumbbell),
+    )
+    val dayDropDownItem = listOf(
+        "Today",
+        "Tomorrow",
+        "Week",
+        "Month",
+    )
+    val progressionDropDownItem = listOf(
+        "On Progress",
+        "Completed",
     )
 
 }

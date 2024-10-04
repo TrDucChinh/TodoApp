@@ -24,6 +24,6 @@ data class Task(
     val dueDate: Date,
     val dueTime: Date,
     val categoryId: Int,
-    val isFinish: Boolean,
+    var isFinish: Boolean,
     val taskPriority: Int,
 )

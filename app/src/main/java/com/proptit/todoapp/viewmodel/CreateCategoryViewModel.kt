@@ -1,18 +1,16 @@
 package com.proptit.todoapp.viewmodel
 
 import android.app.Application
-import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.proptit.todoapp.database.category.CategoryRepository
-import com.proptit.todoapp.model.Category
-import com.proptit.todoapp.utils.List
+import com.proptit.todoapp.utils.ListData
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class CreateCategoryViewModel(application: Application): ViewModel() {
-    private val categoryRepository: CategoryRepository = CategoryRepository(application, List.categoryItems)
+    private val categoryRepository: CategoryRepository = CategoryRepository(application, ListData.categoryItems)
 
      fun insertCategory(titleCategory: String, idColor: Int, idIcon: Int) {
         viewModelScope.launch(Dispatchers.IO) {

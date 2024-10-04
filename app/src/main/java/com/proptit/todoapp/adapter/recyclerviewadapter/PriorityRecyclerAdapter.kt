@@ -9,13 +9,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.proptit.todoapp.R
 import com.proptit.todoapp.interfaces.IPriorityListener
 import com.proptit.todoapp.item.ItemPriority
-import com.proptit.todoapp.utils.List
+import com.proptit.todoapp.utils.ListData
 
 class PriorityRecyclerAdapter(
     private val priorityListener: IPriorityListener,
     private val selectedPriority: Int
 ) : RecyclerView.Adapter<PriorityRecyclerAdapter.PriorityViewHolder>() {
-    private val priorityItems = List.priorityItems
+    private val priorityItems = ListData.priorityItems
     private var selectedPosition = -1;
     init {//Tìm vị trí đã được chọn
         selectedPosition = priorityItems.indexOfFirst { it.priority == selectedPriority }

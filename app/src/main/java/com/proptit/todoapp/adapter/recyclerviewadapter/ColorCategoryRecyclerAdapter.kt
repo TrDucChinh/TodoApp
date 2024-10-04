@@ -7,14 +7,13 @@ import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.proptit.todoapp.R
 import com.proptit.todoapp.interfaces.IColorListener
-import com.proptit.todoapp.interfaces.IIconCategoryListener
-import com.proptit.todoapp.utils.List
+import com.proptit.todoapp.utils.ListData
 
 class ColorCategoryRecyclerAdapter(
     private val colorCategoryListener: IColorListener,
 ) :
     RecyclerView.Adapter<ColorCategoryRecyclerAdapter.ColorCategoryViewHolder>() {
-    private val colorCategoryItems = List.colorCategoryItems
+    private val colorCategoryItems = ListData.colorCategoryItems
     private var selectedPosition = -1
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ColorCategoryViewHolder {

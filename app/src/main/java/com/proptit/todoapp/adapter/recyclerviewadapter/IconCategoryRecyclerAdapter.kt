@@ -8,13 +8,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.proptit.todoapp.R
 import com.proptit.todoapp.interfaces.IIconCategoryListener
 import com.proptit.todoapp.item.ItemIcon
-import com.proptit.todoapp.utils.List
+import com.proptit.todoapp.utils.ListData
 
 class IconCategoryRecyclerAdapter(
     private val iconCategoryListener: IIconCategoryListener,
     private val selectedIconCategory: Int
 ): RecyclerView.Adapter<IconCategoryRecyclerAdapter.IconCategoryViewHolder>() {
-    private val iconCategoryItems = List.iconCategoryItems
+    private val iconCategoryItems = ListData.iconCategoryItems
     private var selectedPosition = -1
     init {
         selectedPosition = iconCategoryItems.indexOfFirst { it.icon == selectedIconCategory }
