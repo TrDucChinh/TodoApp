@@ -2,6 +2,7 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+<<<<<<< HEAD
     <color name="gray">#363636</color>
     <color name="light_purple">#8687E7</color>
     <color name="defaultColor">#272727</color> <!-- Màu nền mặc định -->
@@ -23,4 +24,6 @@
     <color name="light_yellow">#FFFFE0</color>
     <color name="red_active">#f44336</color>
 
+=======
+>>>>>>> master
 </resources>
