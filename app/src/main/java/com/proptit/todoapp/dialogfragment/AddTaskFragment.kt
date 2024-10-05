@@ -15,6 +15,8 @@ import com.proptit.todoapp.databinding.FragmentAddTaskBinding
 import com.proptit.todoapp.interfaces.ICategoryListener
 import com.proptit.todoapp.interfaces.IPriorityListener
 import com.proptit.todoapp.model.Category
+import com.proptit.todoapp.model.Task
+import com.proptit.todoapp.testnoti.Notification
 import com.proptit.todoapp.viewmodel.AddTaskViewModel
 import java.text.SimpleDateFormat
 import java.util.Calendar
@@ -74,6 +76,16 @@ class AddTaskFragment() : BottomSheetDialogFragment() {
                     false,
                     selectedPriority
                 )
+                val task = Task(
+                    title = etTaskName.text.toString(),
+                    description = etTaskDescription.text.toString(),
+                    dueDate = dueDate!!,
+                    dueTime = dueTime!!,
+                    categoryId = selectedCategory,
+                    isFinish = false,
+                    taskPriority = selectedPriority
+                )
+                Notification.notificationTask(requireContext(), task)
                 dismiss()
             }
 

@@ -9,6 +9,7 @@ import java.util.Calendar
 import java.util.Date
 
 class TaskRepository(application: Application) {
+
     private val taskDao: TaskDao = TodoDatabase.getDatabase(application).taskDao()
     suspend fun insertTask(
         title: String,
@@ -28,10 +29,14 @@ class TaskRepository(application: Application) {
             isFinish = isFinish,
             taskPriority = taskPriority
         )
+
         taskDao.insertTask(task)
     }
 
-    suspend fun updateTask(task: Task) = taskDao.updateTask(task)
+    suspend fun updateTask(task: Task) {
+        taskDao.updateTask(task)
+    }
+
     suspend fun deleteTask(task: Task) = taskDao.deleteTask(task)
 
     fun getTaskByDate(selectedDate: Date) = taskDao.getTaskByDate(selectedDate)
@@ -47,5 +52,9 @@ class TaskRepository(application: Application) {
     fun getAllTaskMonth() = taskDao.getAllTaskThisMonth()
     fun getAllCompletedTasks() = taskDao.getAllCompletedTasks()
     fun getAllUncompletedTasks() = taskDao.getAllUncompletedTasks()
+
+    suspend fun getAllUncompletedTasksDirectly(): List<Task> {
+        return taskDao.getAllUncompletedTasksDirectly()
+    }
 
 }

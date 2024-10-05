@@ -32,6 +32,7 @@ import com.proptit.todoapp.interfaces.IPriorityListener
 import com.proptit.todoapp.model.Category
 import com.proptit.todoapp.model.Subtask
 import com.proptit.todoapp.model.Task
+import com.proptit.todoapp.testnoti.Notification
 import com.proptit.todoapp.utils.KeyBoard
 import com.proptit.todoapp.utils.KeyBoard.onDone
 import com.proptit.todoapp.utils.ListData
@@ -207,6 +208,7 @@ class TaskDetailFragment : Fragment() {
                     .setIcon(R.drawable.ic_save)
                     .setPositiveButton("Yes") { _, _ ->
                         homeViewModel.updateTask(taskDetailTaskViewModel.getNewTask())
+                        Notification.notificationTask(requireContext(), taskDetailTaskViewModel.getNewTask())
                         findNavController().popBackStack()
                     }
                     .setNegativeButton("No") { _, _ ->

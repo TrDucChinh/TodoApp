@@ -18,6 +18,7 @@ interface TaskDao {
     @Query("SELECT * FROM task")
     fun getAllTask(): LiveData<List<Task>>
 
+
     @Query("SELECT * FROM task WHERE id = :taskId")
     fun getTaskById(taskId: Long): LiveData<Task>
 
@@ -55,5 +56,7 @@ interface TaskDao {
     @Update
     suspend fun updateTask(task: Task)
 
+    @Query("SELECT * FROM task WHERE isFinish = 0")
+    suspend fun getAllUncompletedTasksDirectly(): List<Task>
 
 }
