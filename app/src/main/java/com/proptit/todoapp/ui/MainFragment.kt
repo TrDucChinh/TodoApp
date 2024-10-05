@@ -47,13 +47,11 @@ class MainFragment : Fragment() {
             ListData.fragmentList
         )
         viewPager.adapter = pagerAdapter
-        viewPager.isUserInputEnabled = false
-        smoothBottomBar.onItemSelected = {
-            viewPager.currentItem = it
-        }
     }
 
+    private fun initBehavior() {
 
+    }
 
     private fun onBtnAddTaskClick() {
         AddTaskFragment().show(parentFragmentManager, AddTaskFragment.TAG)

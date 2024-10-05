@@ -7,13 +7,11 @@ import com.proptit.todoapp.item.ItemIcon
 import com.proptit.todoapp.ui.HomeFragment
 import com.proptit.todoapp.item.ItemPriority
 import com.proptit.todoapp.model.Category
-import com.proptit.todoapp.ui.CalendarFragment
 
 
 object ListData {
     val fragmentList = arrayListOf<Fragment>(
-        HomeFragment(),
-        CalendarFragment()
+        HomeFragment()
     )
     val priorityItems = listOf(
         ItemPriority(1),

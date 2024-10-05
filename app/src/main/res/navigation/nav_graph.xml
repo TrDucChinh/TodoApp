@@ -8,13 +8,11 @@
     <fragment
         android:id="@+id/mainFragment"
         android:name="com.proptit.todoapp.ui.MainFragment"
-        tools:layout="@layout/fragment_home"
         android:label="MainFragment" >
         <action
-            android:id="@+id/action_mainFragment_to_calendarScreen"
-            app:destination="@id/calendarScreen" />
+            android:id="@+id/action_mainFragment_to_taskDetailFragment"
+            app:destination="@id/taskDetailFragment" />
     </fragment>
-
     <fragment
         android:id="@+id/taskDetailFragment"
         android:name="com.proptit.todoapp.ui.TaskDetailFragment"
@@ -25,14 +23,4 @@
             android:name="TaskArgs"
             app:argType="com.proptit.todoapp.model.Task" />
     </fragment>
-
-    <fragment
-        android:id="@+id/calendarScreen"
-        android:name="com.proptit.todoapp.ui.CalendarFragment"
-        tools:layout="@layout/fragment_calendar"
-        android:label="CalendarFragment" />
-
-    <action android:id="@+id/action_global_taskDetailFragment"
-        app:destination="@id/taskDetailFragment">
-    </action>
 </navigation>
