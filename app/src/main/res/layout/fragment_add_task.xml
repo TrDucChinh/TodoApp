@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bottom_dialog_background"
+    android:orientation="vertical"
+    tools:context=".dialogfragment.AddTaskFragment">
+
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="5dp"
+        android:text="@string/add_task"
+        android:textColor="@color/white"
+        android:textSize="30sp"
+        android:textStyle="bold" />
+
+    <EditText
+        android:id="@+id/et_task_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
+        android:background="@android:color/transparent"
+        android:hint="@string/go_to_sleep"
+        android:inputType="textCapSentences"
+        android:maxLines="1"
+        android:paddingHorizontal="10dp"
+        android:paddingVertical="16dp"
+        android:textColor="@color/white"
+        android:textColorHint="#ACA9A9"
+        android:textSize="24sp"
+        android:textStyle="bold" />
+
+    <EditText
+        android:id="@+id/et_task_description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
+        android:background="@android:color/transparent"
+        android:hint="@string/description"
+        android:inputType="textCapSentences"
+        android:maxLines="2"
+        android:paddingHorizontal="8dp"
+        android:paddingVertical="16dp"
+        android:textColor="@color/white"
+        android:textColorHint="#ACA9A9"
+        android:textSize="16sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="20dp"
+        android:orientation="horizontal">
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/btn_set_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/btn_icon"
+            android:src="@drawable/ic_timer" />
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/btn_set_category"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:background="@drawable/btn_icon"
+            android:src="@drawable/ic_tag" />
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/btn_set_priority"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:background="@drawable/btn_icon"
+            android:src="@drawable/ic_flag" />
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/btn_send"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginStart="16dp"
+            android:background="@drawable/btn_icon"
+            android:src="@drawable/ic_send" />
+    </LinearLayout>
+
+
+</LinearLayout>
