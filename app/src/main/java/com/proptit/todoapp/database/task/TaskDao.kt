@@ -24,6 +24,9 @@ interface TaskDao {
     @Delete
     suspend fun deleteTask(task: Task)
 
+    @Query("SELECT * FROM Task WHERE date(dueDate / 1000, 'unixepoch') = date(:selectedDate / 1000, 'unixepoch') AND isFinish = 0 ORDER BY dueDate ASC, dueTime ASC")
+    fun getTaskByDate(selectedDate: Date): LiveData<List<Task>>
+
 //    @Query("SELECT * FROM task WHERE dueDate >= strftime('%s', 'now', 'start of day') * 1000 AND dueDate < strftime('%s', 'now', '+1 day', 'start of day') * 1000 AND isFinish = 0")
     @Query(" SELECT * FROM task WHERE date(dueDate / 1000, 'unixepoch') = date('now', 'localtime') AND isFinish = 0 ORDER BY dueDate ASC, dueTime ASC")
     fun getAllTaskToday(): LiveData<List<Task>>

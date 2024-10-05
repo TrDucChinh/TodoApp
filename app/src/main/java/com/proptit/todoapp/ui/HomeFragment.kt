@@ -14,6 +14,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.proptit.todoapp.NavGraphDirections
 import com.proptit.todoapp.adapter.recyclerviewadapter.DayTaskRecyclerAdapter
 import com.proptit.todoapp.database.category.CategoryRepository
 import com.proptit.todoapp.database.task.TaskRepository
@@ -36,7 +37,7 @@ class HomeFragment : Fragment() {
 
     private val taskListener = object : ITaskListener {
         override fun onTask(task: Task) {
-            val action = MainFragmentDirections.actionMainFragmentToTaskDetailFragment(task)
+            val action = NavGraphDirections.actionGlobalTaskDetailFragment(task)
             findNavController().navigate(action)
         }
 
